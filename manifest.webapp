@@ -1,0 +1,39 @@
+{
+  "name": "Gymgrejs",
+  "description": "Gains",
+  "launch_path": "/index.html",
+     "fullscreen": "true",
+  "icons": {
+    "16": "/icons/icon16x16.png",
+    "48": "/icons/icon48x48.png",
+    "60": "/icons/icon60x60.png",
+    "128": "/icons/icon128x128.png"
+  },
+    "permissions":{
+    "storage": {},
+    "device-storage:sdcard":{
+        "access": "readwrite",
+        "description": "Required to read file placed on sdcard"
+        
+        }
+    },
+  "developer": {
+    "name": "Ragnar",
+    "url": "example.com"
+  },
+  "origin": "app://kai.arma7x.com",
+  "type": "privileged",
+  "permissions": {
+    "systemXHR": {
+      "description": "Required to load remote content"
+    },
+    "desktop-notification": {
+      "description": "Required for displaying alerts when app is on background"
+    }
+  },
+  "messages": [
+    {
+      "serviceworker-notification": "/index.html"
+    }
+  ]
+}

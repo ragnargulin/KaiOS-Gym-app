@@ -1,0 +1,1071 @@
+/*#region ============== Icons ===========*/
+
+.kai-icon-arrow:before {
+  content: "\e900";
+}
+
+.kai-icon-checkbox-checked:before {
+  content: "\e901";
+}
+
+.kai-icon-checkbox-unchecked:before {
+  content: "\e902";
+}
+
+.kai-icon-radio-button-selected:before {
+  content: "\e906";
+}
+
+.kai-icon-radio-button-unselected:before {
+  content: "\e90f";
+}
+
+.kai-icon-bluetooth:before {
+  content: "\e903";
+}
+
+.kai-icon-calendar:before {
+  content: "\e904";
+}
+
+.kai-icon-camera:before {
+  content: "\e905";
+}
+
+.kai-icon-contacts:before {
+  content: "\e907";
+}
+
+.kai-icon-download:before {
+  content: "\e908";
+}
+
+.kai-icon-email:before {
+  content: "\e909";
+}
+
+.kai-icon-favorite-off:before {
+  content: "\e90a";
+}
+
+.kai-icon-favorite-on:before {
+  content: "\e90b";
+}
+
+.kai-icon-message:before {
+  content: "\e90c";
+}
+
+.kai-icon-mic:before {
+  content: "\e90d";
+}
+
+.kai-icon-phone:before {
+  content: "\e90e";
+}
+
+.kai-icon-search:before {
+  content: "\e910";
+}
+
+.kai-icon-settings:before {
+  content: "\e911";
+}
+
+.kai-icon-video:before {
+  content: "\e912";
+}
+
+.kai-icon-wifi:before {
+  content: "\e913";
+}
+
+/*#endregion */
+
+/*#region ============== Basic ============== */
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Open Sans";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+ul,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.statusbar-placeholder {
+  background-color: #f9f9f9;
+  color: black;
+  height: 26px;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  font-family: "Open Sans";
+}
+
+.kui-flex-wrap {
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+}
+
+.kui-router-m-top {
+  margin-top: 28px;
+}
+
+.kui-router-m-bottom {
+  margin-bottom: 30px;
+}
+
+.kui-router-h-hdr {
+  height: calc(100vh - 28px) !important;
+}
+
+.kui-router-h-sk {
+  height: calc(100vh - 30px) !important;
+}
+
+.kui-router-h-hdr-sk {
+  height: calc(100vh - 58px) !important;
+}
+
+.kui-tab-h-28 {
+  height: calc(100vh - 28px) !important;
+  overflow-y: hidden;
+}
+
+.kui-tab-h-30 {
+  height: calc(100vh - 30px) !important;
+  overflow-y: hidden;
+}
+
+.kui-tab-h-58 {
+  height: calc(100vh - 58px) !important;
+  overflow-y: hidden;
+}
+
+.kui-tab-h-60 {
+  height: calc(100vh - 60px) !important;
+  overflow-y: hidden;
+}
+
+.kui-tab-h-88 {
+  height: calc(100vh - 88px) !important;
+  overflow-y: hidden;
+}
+
+.kui-content-area {
+  overflow: hidden;
+  position: relative;
+}
+
+.kui-overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  z-index: -1;
+}
+
+.kui-overlay-visible {
+  height: calc(100% - 30px);
+  z-index: 1;
+  visibility: visible;
+}
+
+.kui-overlay-visible-no-sk {
+  height: calc(100%);
+  z-index: 1;
+  visibility: visible;
+}
+
+.kui-text-upcase {
+  text-transform: uppercase;
+}
+
+/*#endregion */
+
+/*#region ============== Alignment ============== */
+.kui-text-left {
+  text-align: left;
+}
+
+.kui-text-center {
+  text-align: center;
+}
+
+.kui-text-right {
+  text-align: right;
+}
+
+/*#endregion */
+
+/*#region ============== Font ============== */
+
+.kui-h1 {
+  font-size: 17px;
+  font-weight: 300;
+}
+
+.kui-h2 {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.kui-h3,
+.kui-h4,
+.kui-sec {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.kui-h5 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.kui-pri,
+.kui-text,
+.kui-btn {
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.kui-thi {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.kui-link {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/*#endregion */
+
+/*#region ============== Header ============== */
+.kui-header {
+  height: 28px;
+  line-height: 28px;
+  background-color: #b1bfca;
+
+  border-bottom-right-radius: 7px;
+  border-bottom-left-radius: 7px;
+  color: #263238;
+  text-align: center;
+  vertical-align: middle;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  margin-bottom: 28px;
+  font-weight: bold;
+  z-index: 9;
+  cursor: none;
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -moz-user-select: none;
+}
+
+/*#endregion */
+
+/*#region ============== Separators ============== */
+.kui-separator {
+  color: #6a6a6a;
+  height: 28px;
+  background-color: #f9f9f9;
+  line-height: 28px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+.kui-frontpage-separator {
+  height: 8px;
+  background-color: #f9f9f9;
+  line-height: 28px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+.kui-sets-separator {
+  height: 4px;
+  background-color: #f9f9f9;
+  line-height: 28px;
+  padding-left: 10px;
+  text-align: center;
+}
+
+/*#endregion*/
+
+/*#region ============== Software key ============== */
+.kui-software-key {
+  height: 30px;
+  line-height: 30px;
+  background-color: #e3f2fd;
+  display: flex;
+  align-items: center;
+  padding: 0px;
+  color: 263238;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 9;
+  -moz-user-select: none;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+.kui-software-key-dark {
+  height: 30px;
+  line-height: 30px;
+  background-color: #b1bfca;
+  display: flex;
+  align-items: center;
+  padding: 0px;
+  color: #263238;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  z-index: 9;
+}
+
+.kui-software-key-left {
+  width: 32%;
+  text-align: left;
+  padding-left: 5px;
+  font-weight: 600;
+  font-size: 14px;
+  border-top-left-radius: 7px;
+}
+
+.kui-software-key-center {
+  width: 36%;
+  text-align: center;
+  font-weight: 600;
+}
+
+.kui-software-key-right {
+  width: 32%;
+  text-align: right;
+  padding-right: 5px;
+  font-weight: 600;
+  font-size: 14px;
+  border-top-right-radius: 7px;
+}
+
+/*#endregion*/
+
+/*#region ============== Toast ============== */
+.kui-toast {
+  top: 0;
+  z-index: -1;
+  position: fixed;
+  min-height: 32px;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  background-color: #323232;
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+}
+
+.kui-toast-visible {
+  z-index: 10;
+  visibility: visible;
+}
+
+.kui-toast .kui-pri {
+  margin: 0;
+}
+
+.kui-toast-shadow {
+  height: 6px;
+  background-image: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.4) 100%
+  );
+}
+
+/*#endregion*/
+
+/*#region ============== Sets =========*/
+
+body {
+  counter-reset: section;
+}
+
+.some-page-wrapper {
+  margin: 15px;
+  background-color: transparent;
+}
+
+
+
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+  
+}
+
+.sets {
+  background-color: transparent;
+  margin-right: -10px;
+
+}
+
+.reps {
+  background-color: transparent;
+  margin-left: -10px;
+  
+}
+
+.reps li {
+  background-color: #f9f9f9;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 25px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 40px;
+  border: 3px solid rgb(211, 211, 211);
+  box-sizing: border-box;
+}
+
+.padding {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+
+.sets li {
+  background-color: rgb(211, 211, 211);
+  height: 40px;
+  border-bottom-left-radius: 40px;
+  border-top-left-radius: 40px;
+  font-size: 25px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+.sets li::before {
+  counter-increment: section;
+  content: "Set " counter(section) ":   ";
+
+}
+
+.reps li.focus {
+  background-color: #263238;
+  text-decoration: underline;
+  font-size: 25px;
+  font-weight: bolder;
+  height: 40px;
+  transition-property: font-size;
+  transition-duration: 0.2s;
+  color: #f9f9f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*#endregion*/
+
+/*#region ============== List ============== */
+li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kui-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  flex: 1;
+  background-color: #f9f9f9;
+}
+
+.kui-list li {
+  background-color: #9d46ff;
+
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 30px;
+
+  color: #f9f9f9;
+
+  height: 53px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kui-list li .kui-list-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  margin-right: 10px;
+}
+
+.kui-list-cont p {
+  margin: 4px 0;
+}
+
+.kui-list-cont .kui-pri {
+  color: #b1bfca;
+}
+
+.kui-list-cont .kui-sec {
+  color: #6a6a6a;
+}
+
+.kui-list li.focus {
+  background-color: #6200ea;
+  font-size: 20px;
+  font-weight: bolder;
+  outline: 0;
+  height: 53px;
+
+  justify-content: space-around;
+
+  border-radius: 30px;
+
+  transition-property: font-size;
+  transition-duration: 0.2s;
+
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kui-list .focus button.kui-btn {
+  outline: 0;
+  color: rgb(88, 41, 41);
+  background-color: #6200ea;
+}
+
+.kui-list li:focus .kui-pri,
+.kui-list li:focus .kui-sec {
+  color: rgb(119, 14, 14);
+}
+
+/*#endregion*/
+
+/*#region ============== Options Menu ============== */
+.kui-option-menu {
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.kui-option-menu .kui-option-title {
+  margin: 0;
+  color: #222831;
+  text-align: center;
+  background-color: #eeeeee;
+  height: 28px;
+  line-height: 28px;
+}
+
+.kui-option-menu .kui-option-body {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+.kui-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.kui-options li {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+  height: 50px;
+  padding: 0 10px;
+  background-color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kui-options li:focus {
+  outline: 0;
+  color: #fff;
+  background-color: #873eff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kui-options li.focus {
+  outline: 0;
+  color: #fff;
+  background-color: #873eff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kui-options li.focus .radio input:checked + span,
+.kui-options li.focus .checkbox input:checked + span {
+  background: #873eff;
+}
+
+.kui-options li.focus .radio input + span::after,
+.kui-options li.focus .checkbox input + span::after {
+  color: #fff;
+}
+
+/*#endregion*/
+
+/*#region ============== Button ============== */
+button.kui-btn {
+  width: 100%;
+  height: 36px;
+  border-radius: 2px;
+  background: #ccc;
+  text-align: center;
+  color: #323232;
+  border: 0;
+  display: block;
+  margin: auto;
+}
+
+button.kui-btn:focus {
+  outline: 0;
+  color: #fff;
+  background-color: #873eff;
+}
+
+/*#endregion*/
+
+/*#region ============== Input ============== */
+.kui-input-holder {
+  height: 76px;
+  padding: 7px 10px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+
+.kui-input-holder.kui-focus-within {
+  background-color: #873eff;
+  outline: 0;
+}
+
+.kui-input-label {
+  color: #323232;
+  display: block;
+  padding-bottom: 8px;
+}
+
+.kui-input-holder.kui-focus-within .kui-input-label {
+  color: #fff;
+}
+
+.kui-input {
+  height: 36px;
+  width: 100%;
+  border-radius: 2px;
+  padding-left: 10px;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 1px solid #aaaaaa;
+}
+
+.kui-input ::-moz-placeholder,
+.kui-input :-moz-placeholder {
+  color: #323232;
+}
+
+.kui-input:focus {
+  outline: 0;
+}
+
+/*#endregion*/
+
+/*#region ============== Table ============== */
+.kui-table,
+.kui-table th,
+.kui-table td {
+  border: 1px solid #320374;
+  border-collapse: collapse;
+}
+
+.kui-table {
+  width: 100%;
+}
+
+.kui-table thead {
+  background-color: #320374;
+  color: #fff;
+}
+
+.kui-table tr:focus {
+  outline: 0;
+  background-color: #873eff;
+  color: #fff;
+}
+
+.kui-table td {
+  width: 50%;
+  padding: 4px 5px;
+}
+
+.kui-table td:last-child {
+  text-align: right;
+}
+/*#endregion*/
+
+/*#region ============== Progress ============== */
+.progress {
+  height: 60px;
+  background: #fff;
+  padding: 10px 10px;
+  box-sizing: border-box;
+}
+
+.progress:focus .progress-label {
+  color: #fff;
+}
+
+.progress label {
+  color: #332233;
+  display: inline-block;
+  width: 100%;
+}
+
+.progress-label {
+  float: left;
+}
+
+.progress-value {
+  float: right;
+  padding-top: 3px;
+}
+
+.progress input {
+  width: 100%;
+  outline: none;
+  height: 5px;
+  border-radius: 3px;
+}
+
+.progress input::-moz-range-thumb {
+  cursor: pointer;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+}
+
+.progress input,
+.progress input::-moz-range-thumb,
+.progress input::-moz-range-progress,
+.progress input::-moz-range-track {
+  -moz-appearance: none;
+  appearance: none;
+  background: #873eff;
+}
+
+/*#endregion*/
+
+/*#region KaiOS portrait devices (240x320) */
+@media only screen and (orientation: portrait) {
+  .kai-container {
+    width: 240px;
+  }
+
+  .kui-content-area {
+    max-height: 236px;
+  }
+
+  .kui-option-menu {
+    max-height: 288px;
+  }
+
+  .kui-options {
+    max-height: 200px;
+  }
+}
+
+/*#endregion*/
+
+/*#region KaiOS landscape devices (320x240) */
+@media screen and (orientation: landscape) {
+  .kai-container {
+    width: 320px;
+  }
+
+  .kui-content-area {
+    max-height: 156px;
+  }
+
+  .kui-option-menu {
+    max-height: 128px;
+  }
+
+  .kui-options {
+    max-height: 100px;
+  }
+}
+/*#endregion*/
+
+/*#region ============== Tab ============== */
+.kui-tab {
+  list-style: none;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  white-space: nowrap;
+  background-color: #e3f2fd;
+  height: 30px;
+  line-height: 30px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+}
+
+.kui-tab li {
+  background-color: #e3f2fd;
+  height: 17px;
+  line-height: 17px;
+  display: inline;
+  margin: 2px 0px 2px 2px;
+  padding: 0px 3px;
+  font-size: 14px;
+  text-align: center;
+  color: #8a8a8a;
+  font-weight: bold;
+  border-bottom: 3px solid transparent;
+}
+
+.kui-tab li.focus {
+  outline: 0;
+  color: #000;
+  border-bottom: 3px solid #9d46ff;
+}
+
+.kui-tab li:focus {
+  outline: 0;
+  color: #000;
+  border-bottom: 3px solid #9d46ff;
+}
+
+.kai-focus {
+  background-color: #873eff;
+  color: #fff !important;
+}
+
+.kui-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kai-text-center {
+  text-align: center;
+}
+
+.kai-container {
+  padding: 0px;
+  word-wrap: break-word;
+}
+
+.kai-padding-5 {
+  padding: 5px !important;
+}
+
+.kai-margin-5 {
+  margin: 5px !important;
+}
+
+.kui-flex-grow {
+  flex-grow: 1;
+}
+
+.kai-h-10 {
+  height: 10%;
+}
+
+.kai-h-20 {
+  height: 20%;
+}
+
+.kai-h-30 {
+  height: 30%;
+}
+
+.kai-h-40 {
+  height: 40%;
+}
+
+.kai-h-50 {
+  height: 50%;
+}
+
+.kai-h-60 {
+  height: 60%;
+}
+
+.kai-h-70 {
+  height: 70%;
+}
+
+.kai-h-80 {
+  height: 80%;
+}
+
+.kai-h-90 {
+  height: 90%;
+}
+
+.kai-h-100 {
+  height: 100%;
+}
+
+.kui-lcr-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: space-evenly;
+}
+
+.kai-left-col {
+  width: 100%;
+  text-align: center;
+}
+
+.kai-center-col {
+  width: 100%;
+  text-align: center;
+  border-style: solid;
+  border-width: 0px 0px 0px 1px;
+  border-color: #fff #fff #fff #e6e6e6;
+}
+
+.kai-right-col {
+  width: 100%;
+  text-align: center;
+  border-style: solid;
+  border-width: 0px 0px 0px 1px;
+  border-color: #fff #fff #fff #e6e6e6;
+}
+
+.kai-lcr-top {
+  color: #323232;
+  padding: 15px 0;
+}
+
+.kai-lcr-mid {
+  color: #873eff;
+  font-size: 20px;
+  padding: 15px 0;
+}
+
+.kai-lcr-bottom {
+  color: #323232;
+  padding: 15px 0;
+}
+
+.kai-loading {
+  z-index: 9;
+  top: 0;
+  position: fixed;
+  background: #cccccc;
+  width: 100%;
+  height: 4px;
+}
+
+.slider {
+  position: absolute;
+  width: 98%;
+  height: 4px;
+}
+
+.line {
+  position: absolute;
+  background: #cccccc;
+  width: 100%;
+  height: 4px;
+}
+
+.break {
+  position: absolute;
+  background: #320374;
+  width: 2%;
+  height: 4px;
+}
+
+.sr-only,
+.sr-only-focusable:not(:focus) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+input {
+  border: none;
+  background-color: transparent;
+  text-align: center;
+  margin-left: 0%;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+}
+
+/*#endregion*/
