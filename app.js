@@ -257,7 +257,7 @@ window.addEventListener("load", function () {
 
   //#endregion
 
-  //#region ====== Child_2/secondchild This is also what user-made worjouts should be like======
+  //#region ====== Child_2/secondchild This is also what user-made workouts should be like======
 
   const secondChild = Kai.createTabNav("_CHILD_ 2", ".child2DemoNav", [
     firstTab,
