@@ -3,15 +3,25 @@
     name="viewport"
     content="width=device-width,user-scalable=no,initial-scale=1"
   />
+  <style>
+      input
+        {
+            margin:10px;
+            font-size:medium;
+            border:1px solid black;
+            color:black
+        }
+  </style>
+  <script src="js/addWorkout.js" defer></script>
     <body style="color:black">
         <div>
-            <input placeholder="Workout Name" style="margin:10px;font-size:medium;border:1px solid black;color:black"></input>
-            <br>
-            <button style="margin:10px;position: absolute;left:20%">Add Exercise</button>
-            <br>
-        <div>
-            <div style="margin:30px" id="exercises">
-                <h2 style="position: absolute;left:10%">Exercises list</h2>
+            <input id='inp1' placeholder="Workout Name" ></input>
+        </div>
+            <div style="margin:0 0 0 0 ">
+                <h4>Exercises List <br> Click Add to add Exercises</h4>
+                <form id='exers' style="margin:10px;">
+
+                </form>
             </div>
     </body>
 </html>

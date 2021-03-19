@@ -273,16 +273,47 @@ window.addEventListener("load", function () {
     // Component for Adding Workout
     name: "_ADD_",
     data: {
-      title: "_ADD_",
-      counter: -1,
+      numEx: 1,
     },
     verticalNavClass: ".child2Nav",
     templateUrl: document.location.origin + "/templates/addWorkout.html",
     mounted: function () {},
     unmounted: function () {},
     methods: {},
-    softKeyText: {},
-    softKeyListener: {},
+    softKeyText: { left: "Add", center: "Save", right: "Del Last" },
+    softKeyListener: {
+      left: function () {
+        // edit the exTemplate to modify the style of the added input agents
+        try {
+          let exTemplate =
+            "<div class='exerInp' id='Ex" +
+            String(this.data.numEx) +
+            "'>" +
+            String(this.data.numEx) +
+            ")." +
+            "<input placeholder='Exercise Name'>" +
+            "</input><input placeholder='Sets'></input><input placeholder='Reps'></input></div>";
+          document.getElementById("exers").innerHTML += exTemplate;
+          console.log(exTemplate);
+          this.data.numEx++;
+        } catch (e) {
+          console.log(e.mesage);
+        }
+      },
+      center: function () {},
+      right: function () {
+        if (this.data.numEx > 1) {
+          try {
+            document
+              .getElementById("Ex" + String(this.data.numEx - 1))
+              .remove();
+            this.data.numEx--;
+          } catch (e) {
+            console.log(e.message);
+          }
+        }
+      },
+    },
     dPadNavListener: {},
     backKeyListener: function () {},
   });
