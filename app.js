@@ -232,6 +232,9 @@ window.addEventListener("load", function () {
           "Select",
           (selected) => {
             this.setData({ selected: selected.text });
+            if (idx == 2) this.$router.push("addChild");
+            else if (idx == 0) this.$router.push("editChild");
+            else if (idx == 1) this.$router.push("delChild");
           },
           undefined,
           idx
@@ -266,6 +269,22 @@ window.addEventListener("load", function () {
     fourthTab,
   ]);
 
+  const addChild = new Kai({
+    name: "_ADD_",
+    data: {
+      title: "_ADD_",
+      counter: -1,
+    },
+    verticalNavClass: ".child2Nav",
+    templateUrl: document.location.origin + "/templates/addWorkout.html",
+    mounted: function () {},
+    unmounted: function () {},
+    methods: {},
+    softKeyText: { left: "PUSH", center: "SELECT", right: "POP" },
+    softKeyListener: {},
+    dPadNavListener: {},
+    backKeyListener: function () {},
+  });
   //#endregion
 
   //#region ====== Startpage ======
@@ -279,6 +298,10 @@ window.addEventListener("load", function () {
       second: {
         name: "secondChild",
         component: secondChild,
+      },
+      addChild: {
+        name: "addChild",
+        component: addChild,
       },
     },
   });
