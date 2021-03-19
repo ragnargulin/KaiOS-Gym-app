@@ -270,6 +270,7 @@ window.addEventListener("load", function () {
   ]);
 
   const addChild = new Kai({
+    // Component for Adding Workout
     name: "_ADD_",
     data: {
       title: "_ADD_",
@@ -280,7 +281,43 @@ window.addEventListener("load", function () {
     mounted: function () {},
     unmounted: function () {},
     methods: {},
-    softKeyText: { left: "PUSH", center: "SELECT", right: "POP" },
+    softKeyText: {},
+    softKeyListener: {},
+    dPadNavListener: {},
+    backKeyListener: function () {},
+  });
+
+  const editChild = new Kai({
+    // Component for editing Workout
+    name: "_EDIT_",
+    data: {
+      title: "_EDIT_",
+      counter: -1,
+    },
+    verticalNavClass: ".child2Nav",
+    templateUrl: document.location.origin + "/templates/editWorkout.html",
+    mounted: function () {},
+    unmounted: function () {},
+    methods: {},
+    softKeyText: {},
+    softKeyListener: {},
+    dPadNavListener: {},
+    backKeyListener: function () {},
+  });
+
+  const delChild = new Kai({
+    // Component for delete Workout
+    name: "_DEL_",
+    data: {
+      title: "_DEL_",
+      counter: -1,
+    },
+    verticalNavClass: ".child2Nav",
+    templateUrl: document.location.origin + "/templates/delWorkout.html",
+    mounted: function () {},
+    unmounted: function () {},
+    methods: {},
+    softKeyText: {},
     softKeyListener: {},
     dPadNavListener: {},
     backKeyListener: function () {},
@@ -302,6 +339,14 @@ window.addEventListener("load", function () {
       addChild: {
         name: "addChild",
         component: addChild,
+      },
+      editWorkout: {
+        name: "editWorkout",
+        component: editChild,
+      },
+      delWorkout: {
+        name: "delWorkout",
+        component: delChild,
       },
     },
   });
