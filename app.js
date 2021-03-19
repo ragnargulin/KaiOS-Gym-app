@@ -340,11 +340,11 @@ window.addEventListener("load", function () {
         name: "addChild",
         component: addChild,
       },
-      editWorkout: {
+      editChild: {
         name: "editWorkout",
         component: editChild,
       },
-      delWorkout: {
+      delChild: {
         name: "delWorkout",
         component: delChild,
       },
