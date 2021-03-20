@@ -10,7 +10,8 @@ window.addEventListener("load", function () {
     templateUrl: document.location.origin + "/templates/tabs/firstTab.html",
     mounted: function () {
       const savedUl = localStorage.getItem("ul");
-      document.querySelector(".marklyft").innerHTML = savedUl;
+      if (savedUl != null)
+        document.querySelector(".marklyft").innerHTML = savedUl;
     },
     unmounted: function () {},
     methods: {},
