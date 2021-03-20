@@ -291,8 +291,8 @@ window.addEventListener("load", function () {
             "'>" +
             String(this.data.numEx) +
             ")." +
-            "<input placeholder='Exercise Name'>" +
-            "</input><input placeholder='Sets'></input><input placeholder='Reps'></input></div>";
+            "<input class='child2Nav' placeholder='Exercise Name'>" +
+            "</input><input placeholder='Sets'></input><input class='child2Nav' placeholder='Reps'></input></div>";
           document.getElementById("exers").innerHTML += exTemplate;
           console.log(exTemplate);
           this.data.numEx++;
