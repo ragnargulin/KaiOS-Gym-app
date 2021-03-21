@@ -168,6 +168,31 @@ window.addEventListener("load", function () {
     },
   });
 
+  const fifthTab = new Kai({
+    name: "Facepulls",
+    data: {
+      title: "_fourthTab_",
+    },
+    verticalNavClass: ".fifthTabNav",
+    templateUrl: document.location.origin + "/templates/tabs/fourthTab.html",
+    mounted: function () {},
+    unmounted: function () {},
+    methods: {},
+    softKeyText: { left: "-", center: "Spara", right: "+" },
+    softKeyListener: {
+      left: function () {},
+      center: function () {},
+      right: function () {},
+    },
+    dPadNavListener: {
+      arrowUp: function () {
+        this.navigateListNav(-1);
+      },
+      arrowDown: function () {
+        this.navigateListNav(1);
+      },
+    },
+  });
   //#endregion
 
   //#region ====== Child_1/firstchild/Options ======
@@ -186,7 +211,20 @@ window.addEventListener("load", function () {
     verticalNavClass: ".child1Nav",
     components: [],
     templateUrl: document.location.origin + "/templates/child_1.html",
-    mounted: function () {},
+    mounted: function () {
+      console.log("In firstChild");
+      let workOuts = JSON.parse(localStorage.getItem("workouts"));
+      for (let c = 0; workOuts != null && c < workOuts.length; c++) {
+        let htmlTemplate =
+          "<div class='kui-frontpage-separator'></div>" +
+          "<li class='child1Nav' @click='push(\"" +
+          workOuts[c].title +
+          "\")'>" +
+          workOuts[c].title +
+          "<svg class='svg' width='40' height='60'><polyline points='10 10 30 30 10 50' stroke='#9d46ff' stroke-width='5' stroke-linecap='butt' fill='none' stroke-linejoin='round'>&lt;</polyline></svg></li>";
+        document.getElementById("workOutList").innerHTML += htmlTemplate;
+      }
+    },
     unmounted: function () {},
     methods: {
       listenState: function (data) {
@@ -195,8 +233,9 @@ window.addEventListener("load", function () {
       selected: function (val) {
         this.setData({ selected: val.text });
       },
-      push: function () {
-        this.$router.push("second");
+      push: function (elem = null) {
+        if (elem == null || elem == "") this.$router.push("second");
+        else this.$router.push(elem);
       },
       testOptMenu: function () {
         const idx = this.data.opts.findIndex((opt) => {
@@ -269,7 +308,6 @@ window.addEventListener("load", function () {
     thirdTab,
     fourthTab,
   ]);
-
   const addChild = new Kai({
     // Component for Adding Workout
     name: "_ADD_",
@@ -286,22 +324,51 @@ window.addEventListener("load", function () {
       left: function () {
         // edit the exTemplate to modify the style of the added input agents
         try {
-          let exTemplate =
-            "<div class='exerInp' id='Ex" +
-            String(this.data.numEx) +
-            "'>" +
+          let exTemplate = document.createElement("div");
+          exTemplate.setAttribute("class", "exerInp");
+          exTemplate.setAttribute("id", "Ex" + String(this.data.numEx));
+          exTemplate.innerHTML =
             String(this.data.numEx) +
             ")." +
-            "<input class='child2Nav' placeholder='Exercise Name'>" +
-            "</input><input placeholder='Sets'></input><input class='child2Nav' placeholder='Reps'></input></div>";
-          document.getElementById("exers").innerHTML += exTemplate;
-          console.log(exTemplate);
+            "<input name='ex" +
+            String(this.data.numEx) +
+            "'class='child2Nav' placeholder='Exercise Name' value=''>" +
+            "</input>" +
+            "<input name='set" +
+            String(this.data.numEx) +
+            "'class='child2Nav' placeholder='Sets'></input><input name='rep" +
+            String(this.data.numEx) +
+            "'class='child2Nav' placeholder='Reps'></input>";
+          document.getElementById("exers").appendChild(exTemplate);
           this.data.numEx++;
         } catch (e) {
           console.log(e.mesage);
         }
       },
-      center: function () {},
+      center: function () {
+        let exTitle = document.getElementById("inp1").value;
+        let arr = $("#exers").serializeArray();
+        let obj = {};
+        obj.title = exTitle;
+        obj.exercises = [];
+        for (let c = 0; c < arr.length; c += 3) {
+          obj.exercises.push({
+            title: arr[c].value,
+            sets: arr[c + 1].value,
+            reps: arr[c + 2].value,
+          });
+        }
+        try {
+          let workouts = localStorage.getItem("workouts");
+          if (workouts == null) workouts = [];
+          else workouts = JSON.parse(workouts);
+          workouts.push(obj);
+          localStorage.setItem("workouts", JSON.stringify(workouts));
+          this.$router.showToast("Saved !");
+        } catch (e) {
+          console.log(e);
+        }
+      },
       right: function () {
         if (this.data.numEx > 1) {
           try {
@@ -355,7 +422,6 @@ window.addEventListener("load", function () {
     backKeyListener: function () {},
   });
   //#endregion
-
   //#region ====== Startpage ======
   const router = new KaiRouter({
     title: "GymApp",
@@ -384,12 +450,102 @@ window.addEventListener("load", function () {
   });
 
   //#endregion
+  function constructExerciseComponent(obj) {
+    function constructTabs(exs) {
+      let arr = [];
+      for (let i = 0; i < exs.length; i++) {
+        let Tab = new Kai({
+          name: exs[i].title,
+          data: {
+            title: exs[i].title,
+          },
+          components: [],
+          verticalNavClass: ".firstTabNav" + i,
+          templateUrl:
+            document.location.origin + "/templates/workout/tabTemplate.html",
+          mounted: function () {
+            const savedUl = localStorage.getItem(exs[i].title);
+            if (savedUl != null)
+              document.querySelector("head").innerHTML = savedUl;
+            else {
+              for (let c = 0; c < Number(exs[i].sets); c++)
+                document.getElementById("sets").innerHTML +=
+                  "<div class='kui-sets-separator'></div><li></li>";
+              for (let c = 0; c < Number(exs[i].sets); c++)
+                document.getElementById("reps").innerHTML +=
+                  "<div class='kui-sets-separator'></div><li class='child2Nav firstTabNav'>" +
+                  exs[i].reps +
+                  "</li>";
+            }
+          },
+          unmounted: function () {},
+          methods: {},
+          softKeyText: { left: "-", center: "Save", right: "+" },
+          softKeyListener: {
+            left: function tabLeftSoftKey() {
+              const listNav = document.querySelectorAll(this.verticalNavClass);
+              if (this.verticalNavIndex > -1) {
+                let oldWeight = listNav[this.verticalNavIndex].innerHTML;
+                let newWeight = parseFloat(oldWeight) - 2.5;
+                listNav[this.verticalNavIndex].innerHTML = newWeight;
+              }
+            },
+            center: function () {
+              this.$router.showToast("Saved!");
 
+              const exers = document.querySelector(exs[i].title);
+              localStorage.setItem(exs[i].title, exers.innerHTML);
+
+              const listNav = document.querySelectorAll(this.verticalNavClass);
+              if (this.verticalNavIndex > -1) {
+                listNav[this.verticalNavIndex].style.backgroundColor =
+                  "#EBEBE4";
+                listNav[this.verticalNavIndex].style.color = "#808e95";
+                this.navigateListNav(1);
+              }
+            },
+            right: function () {
+              const listNav = document.querySelectorAll(this.verticalNavClass);
+              if (this.verticalNavIndex > -1) {
+                let oldWeight = listNav[this.verticalNavIndex].innerHTML;
+                let newWeight = parseFloat(oldWeight) + 2.5;
+                listNav[this.verticalNavIndex].innerHTML = newWeight;
+              }
+            },
+          },
+          dPadNavListener: {
+            arrowUp: function () {
+              this.navigateListNav(-1);
+            },
+            arrowDown: function () {
+              this.navigateListNav(1);
+            },
+          },
+        });
+        arr.push(Tab);
+      }
+      return arr;
+    }
+    let newChild = Kai.createTabNav(
+      "_CHILD_ 4",
+      ".child4DemoNav",
+      constructTabs(obj.exercises)
+    );
+    return newChild;
+  }
   const app = new Kai({
     name: "_APP_",
     data: {},
     templateUrl: document.location.origin + "/templates/template.html",
-    mounted: function () {},
+    mounted: function () {
+      let workOutList = JSON.parse(localStorage.getItem("workouts"));
+      for (let c = 0; workOutList != null && c < workOutList.length; c++) {
+        router.routes[workOutList[c].title] = {
+          name: workOutList[c].title,
+          component: constructExerciseComponent(workOutList[c]),
+        };
+      }
+    },
     unmounted: function () {},
     router,
   });
