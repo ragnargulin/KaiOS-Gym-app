@@ -171,7 +171,6 @@ const Kai = (function () {
     DOM.__kaikit__ = this;
     DOM.addEventListener("click", this.handleClick);
     this.addKeydownListener();
-    console.log(this);
     if (this.isMounted) {
       this.exec();
       this.mounted();
@@ -190,7 +189,6 @@ const Kai = (function () {
         }
       };
       xhttp.open("GET", this.templateUrl, true);
-      console.log("hix");
       xhttp.send();
     }
   };
@@ -220,6 +218,7 @@ const Kai = (function () {
     }
 
     if (window.Mustache) {
+      ``;
       const data = JSON.parse(JSON.stringify(this.data));
       data["__stringify__"] = function () {
         if (typeof this === "object") {
@@ -260,10 +259,12 @@ const Kai = (function () {
         this.verticalNavIndex = 0;
       }
       const cur = listNav[this.verticalNavIndex];
-      cur.focus();
-      cur.classList.add("focus");
-      this.verticalNavIndex = this.verticalNavIndex - 1;
-      this.scrollThreshold = this.navigateListNav(1);
+      if (cur != null) {
+        cur.focus();
+        cur.classList.add("focus");
+        this.verticalNavIndex = this.verticalNavIndex - 1;
+        this.scrollThreshold = this.navigateListNav(1);
+      }
     }
 
     const tabNav = document.querySelectorAll(this.horizontalNavClass);

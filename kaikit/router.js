@@ -150,7 +150,6 @@ const KaiRouter = (function () {
   };
 
   KaiRouter.prototype.pop = function () {
-    console.log(this);
     if (this.bottomSheet) {
       return;
     }
@@ -159,8 +158,6 @@ const KaiRouter = (function () {
     if (pathname.length === 0) {
       pathname = "/index.html";
     }
-    console.log(pathname);
-    console.log(paths);
     if (
       (paths.length > 0 && this.stack.length) > 0 &&
       paths.length === this.stack.length
@@ -181,7 +178,6 @@ const KaiRouter = (function () {
           }
         }
         const component = this.stack[this.stack.length - 1];
-        console.log(component);
         this.setSoftKeyText(
           component.softKeyText.left,
           component.softKeyText.center,

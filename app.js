@@ -189,18 +189,6 @@ window.addEventListener("load", function () {
     mounted: function () {
       console.log("In firstChild");
       let workOuts = JSON.parse(localStorage.getItem("workouts"));
-      let workOutList = JSON.parse(localStorage.getItem("workouts"));
-      for (let c = 0; workOutList != null && c < workOutList.length; c++) {
-        this.$router.routes[workOutList[c].title] = {
-          name: workOutList[c].title,
-          component: (function () {
-            let temp = constructExerciseComponent(workOutList[c]);
-            temp.$router = this.$router;
-            console.log(temp.$router);
-            return temp;
-          })(),
-        };
-      }
       for (let c = 0; workOuts != null && c < workOuts.length; c++) {
         let htmlTemplate =
           "<div class='kui-frontpage-separator'></div>" +
@@ -410,32 +398,62 @@ window.addEventListener("load", function () {
   });
   //#endregion
   //#region ====== Startpage ======
-  const router = new KaiRouter({
-    title: "GymApp",
-    routes: {
-      index: {
-        name: "firstChild",
-        component: firstChild,
-      },
-      second: {
-        name: "secondChild",
-        component: secondChild,
-      },
-      addChild: {
-        name: "addChild",
-        component: addChild,
-      },
-      editChild: {
-        name: "editWorkout",
-        component: editChild,
-      },
-      delChild: {
-        name: "delWorkout",
-        component: delChild,
-      },
+  const routes = {
+    index: {
+      name: "firstChild",
+      component: firstChild,
     },
+    second: {
+      name: "secondChild",
+      component: secondChild,
+    },
+    addChild: {
+      name: "addChild",
+      component: addChild,
+    },
+    editChild: {
+      name: "editWorkout",
+      component: editChild,
+    },
+    delChild: {
+      name: "delWorkout",
+      component: delChild,
+    },
+  };
+  try {
+    let workOutList = JSON.parse(localStorage.getItem("workouts"));
+    for (let c = 0; workOutList != null && c < workOutList.length; c++) {
+      routes[workOutList[c].title] = {
+        name: workOutList[c].title,
+        component: (function () {
+          let temp = constructExerciseComponent(workOutList[c]);
+          //temp.$router = this.$router;
+          return temp;
+        })(),
+      };
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  let router = new KaiRouter({
+    title: "GymApp",
+    routes: routes,
   });
 
+  function updateRouter(options = { title: "GymApp", routes: routes }) {
+    let workOutList = JSON.parse(localStorage.getItem("workouts"));
+    for (let c = 0; workOutList != null && c < workOutList.length; c++) {
+      options.routes[workOutList[c].title] = {
+        name: workOutList[c].title,
+        component: (function () {
+          let temp = constructExerciseComponent(workOutList[c]);
+          //temp.$router = this.$router;
+          return temp;
+        })(),
+      };
+    }
+    if (workOutList != null) router = new KaiRouter(options);
+  }
   //#endregion
   function constructExerciseComponent(obj) {
     function constructTabs(exs) {
@@ -451,19 +469,14 @@ window.addEventListener("load", function () {
           templateUrl:
             document.location.origin + "/templates/workout/tabTemplate.html",
           mounted: function () {
-            const savedUl = localStorage.getItem(exs[i].title);
-            if (savedUl != null)
-              document.querySelector("head").innerHTML = savedUl;
-            else {
-              for (let c = 0; c < Number(exs[i].sets); c++)
-                document.getElementById("sets").innerHTML +=
-                  "<div class='kui-sets-separator'></div><li></li>";
-              for (let c = 0; c < Number(exs[i].sets); c++)
-                document.getElementById("reps").innerHTML +=
-                  "<div class='kui-sets-separator'></div><li class='child2Nav firstTabNav'>" +
-                  exs[i].reps +
-                  "</li>";
-            }
+            for (let c = 0; c < Number(exs[i].sets); c++)
+              document.getElementById("sets").innerHTML +=
+                "<div class='kui-sets-separator'></div><li></li>";
+            for (let c = 0; c < Number(exs[i].sets); c++)
+              document.getElementById("reps").innerHTML +=
+                "<div class='kui-sets-separator'></div><li class='child2Nav firstTabNav'>" +
+                exs[i].reps +
+                "</li>";
           },
           unmounted: function () {},
           methods: {},
