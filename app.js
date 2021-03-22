@@ -168,31 +168,6 @@ window.addEventListener("load", function () {
     },
   });
 
-  const fifthTab = new Kai({
-    name: "Facepulls",
-    data: {
-      title: "_fourthTab_",
-    },
-    verticalNavClass: ".fifthTabNav",
-    templateUrl: document.location.origin + "/templates/tabs/fourthTab.html",
-    mounted: function () {},
-    unmounted: function () {},
-    methods: {},
-    softKeyText: { left: "-", center: "Spara", right: "+" },
-    softKeyListener: {
-      left: function () {},
-      center: function () {},
-      right: function () {},
-    },
-    dPadNavListener: {
-      arrowUp: function () {
-        this.navigateListNav(-1);
-      },
-      arrowDown: function () {
-        this.navigateListNav(1);
-      },
-    },
-  });
   //#endregion
 
   //#region ====== Child_1/firstchild/Options ======
@@ -214,6 +189,18 @@ window.addEventListener("load", function () {
     mounted: function () {
       console.log("In firstChild");
       let workOuts = JSON.parse(localStorage.getItem("workouts"));
+      let workOutList = JSON.parse(localStorage.getItem("workouts"));
+      for (let c = 0; workOutList != null && c < workOutList.length; c++) {
+        this.$router.routes[workOutList[c].title] = {
+          name: workOutList[c].title,
+          component: (function () {
+            let temp = constructExerciseComponent(workOutList[c]);
+            temp.$router = this.$router;
+            console.log(temp.$router);
+            return temp;
+          })(),
+        };
+      }
       for (let c = 0; workOuts != null && c < workOuts.length; c++) {
         let htmlTemplate =
           "<div class='kui-frontpage-separator'></div>" +
@@ -537,15 +524,7 @@ window.addEventListener("load", function () {
     name: "_APP_",
     data: {},
     templateUrl: document.location.origin + "/templates/template.html",
-    mounted: function () {
-      let workOutList = JSON.parse(localStorage.getItem("workouts"));
-      for (let c = 0; workOutList != null && c < workOutList.length; c++) {
-        router.routes[workOutList[c].title] = {
-          name: workOutList[c].title,
-          component: constructExerciseComponent(workOutList[c]),
-        };
-      }
-    },
+    mounted: function () {},
     unmounted: function () {},
     router,
   });

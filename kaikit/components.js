@@ -1,7 +1,7 @@
 //#region ====== Tabs ======
 
 Kai.createTabNav = function (name, horizontalNavClass, tabs) {
-  return new Kai({
+  let ret_val = new Kai({
     name: name,
     data: {},
     components: tabs,
@@ -230,6 +230,7 @@ Kai.createTabNav = function (name, horizontalNavClass, tabs) {
       },
     },
   });
+  return ret_val;
 };
 
 //#endregion

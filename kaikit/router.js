@@ -1,12 +1,10 @@
-const KaiRouter = (function() {
-
+const KaiRouter = (function () {
   function KaiRouter(options) {
     this.init(options);
   }
 
-  KaiRouter.prototype.init = function(options) {
-
-    this.title = '';
+  KaiRouter.prototype.init = function (options) {
+    this.title = "";
     this.routes = {};
     this.stack = [];
     this.header;
@@ -15,11 +13,11 @@ const KaiRouter = (function() {
     this.bottomSheet = false;
 
     this._KaiRouter = function (options) {
-      const allow = ['routes', 'title'];
+      const allow = ["routes", "title"];
       for (var i in options) {
         if (allow.indexOf(i) !== -1) {
-          if (i === 'routes') {
-            if (typeof options[i] === 'object') {
+          if (i === "routes") {
+            if (typeof options[i] === "object") {
               for (var path in options[i]) {
                 const obj = options[i][path];
                 if (obj.component && obj.component instanceof Kai) {
@@ -33,28 +31,28 @@ const KaiRouter = (function() {
           }
         }
       }
-    }
+    };
     this._KaiRouter(options);
-  }
+  };
 
   function getURLParam(key, target) {
     var values = [];
     if (!target) target = location.href;
 
-    key = key.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    key = key.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 
-    var pattern = key + '=([^&#]+)';
-    var o_reg = new RegExp(pattern,'ig');
-    while (true){
+    var pattern = key + "=([^&#]+)";
+    var o_reg = new RegExp(pattern, "ig");
+    while (true) {
       var matches = o_reg.exec(target);
-      if (matches && matches[1]){
+      if (matches && matches[1]) {
         values.push(matches[1]);
       } else {
         break;
       }
     }
 
-    if (!values.length){
+    if (!values.length) {
       return [];
     } else {
       return values.length == 1 ? [values[0]] : values;
@@ -63,39 +61,42 @@ const KaiRouter = (function() {
 
   function createPageURLParam(paths) {
     const cols = [];
-    paths.forEach(function(v) {
-      cols.push('page[]=' + v);
+    paths.forEach(function (v) {
+      cols.push("page[]=" + v);
     });
     if (cols.length > 0) {
-      return  '?' + cols.join('&');
+      return "?" + cols.join("&");
     }
-    return '';
+    return "";
   }
 
-  KaiRouter.prototype.run = function() {
+  KaiRouter.prototype.run = function () {
     this.mountHeader();
     this.mountSoftKey();
     this.mountToast();
     this.calcRouterHeight();
-    const paths = getURLParam('page[]');
+    const paths = getURLParam("page[]");
     if (paths.length === 0) {
-      paths.push('index');
+      paths.push("index");
     }
-    var pathname = window.location.pathname.replace(/\/$/, '');
+    var pathname = window.location.pathname.replace(/\/$/, "");
     if (pathname.length === 0) {
-      pathname = '/index.html';
+      pathname = "/index.html";
     }
     window.history.pushState("/", "", pathname + createPageURLParam(paths));
     paths.forEach((path, k) => {
-      if (k === (paths.length - 1)) {
+      if (k === paths.length - 1) {
         if (this.routes[path]) {
           const component = this.routes[path].component;
           if (component.isMounted === false) {
             this.stack.push(component);
           }
-          this.setSoftKeyText(component.softKeyText.left, component.softKeyText.center, component.softKeyText.right);
-          component.mount('__kai_router__');
-
+          this.setSoftKeyText(
+            component.softKeyText.left,
+            component.softKeyText.center,
+            component.softKeyText.right
+          );
+          component.mount("__kai_router__");
         }
       } else {
         if (this.routes[path]) {
@@ -107,20 +108,20 @@ const KaiRouter = (function() {
         }
       }
     });
-  }
+  };
 
-  KaiRouter.prototype.push = function(path) {
+  KaiRouter.prototype.push = function (path) {
     if (this.bottomSheet) {
       this.hideBottomSheet();
     }
-    const DOM = document.getElementById('__kai_router__');
+    const DOM = document.getElementById("__kai_router__");
     DOM.scrollTop = 0;
     var name = path;
     if (this.stack.length > 0) {
       this.stack[this.stack.length - 1].unmount();
     }
     var component;
-    if (typeof path === 'string' && this.routes[path]) {
+    if (typeof path === "string" && this.routes[path]) {
       component = this.routes[path].component.reset();
     } else if (path instanceof Kai) {
       component = path.reset();
@@ -132,42 +133,61 @@ const KaiRouter = (function() {
     component.scrollThreshold = 0;
     component.verticalNavIndex = -1;
     component.horizontalNavIndex = -1;
-    this.setSoftKeyText(component.softKeyText.left, component.softKeyText.center, component.softKeyText.right);
-    component.mount('__kai_router__');
+    this.setSoftKeyText(
+      component.softKeyText.left,
+      component.softKeyText.center,
+      component.softKeyText.right
+    );
+    component.mount("__kai_router__");
     this.stack.push(component);
-    const paths = getURLParam('page[]');
+    const paths = getURLParam("page[]");
     paths.push(name);
-    var pathname = window.location.pathname.replace(/\/$/, '');
+    var pathname = window.location.pathname.replace(/\/$/, "");
     if (pathname.length === 0) {
-      pathname = '/index.html';
+      pathname = "/index.html";
     }
     window.history.pushState("/", "", pathname + createPageURLParam(paths));
-  }
+  };
 
-  KaiRouter.prototype.pop = function() {
+  KaiRouter.prototype.pop = function () {
+    console.log(this);
     if (this.bottomSheet) {
       return;
     }
-    const paths = getURLParam('page[]');
-    var pathname = window.location.pathname.replace(/\/$/, '');
+    const paths = getURLParam("page[]");
+    var pathname = window.location.pathname.replace(/\/$/, "");
     if (pathname.length === 0) {
-      pathname = '/index.html';
+      pathname = "/index.html";
     }
-    if ((paths.length > 0 && this.stack.length) > 0 && (paths.length === this.stack.length)) {
+    console.log(pathname);
+    console.log(paths);
+    if (
+      (paths.length > 0 && this.stack.length) > 0 &&
+      paths.length === this.stack.length
+    ) {
       var r = false;
-      if ((this.stack.length - 1) > 0) {
+      if (this.stack.length - 1 > 0) {
         paths.pop();
         this.stack.pop();
-        const DOM = document.getElementById('__kai_router__');
+        const DOM = document.getElementById("__kai_router__");
         if (DOM) {
-          if (DOM.__kaikit__ != undefined && DOM.__kaikit__ instanceof Kai && DOM.__kaikit__.id === '__kai_router__') {
+          if (
+            DOM.__kaikit__ != undefined &&
+            DOM.__kaikit__ instanceof Kai &&
+            DOM.__kaikit__.id === "__kai_router__"
+          ) {
             DOM.__kaikit__.unmount();
-            DOM.removeEventListener('click', DOM.__kaikit__.handleClick);
+            DOM.removeEventListener("click", DOM.__kaikit__.handleClick);
           }
         }
         const component = this.stack[this.stack.length - 1];
-        this.setSoftKeyText(component.softKeyText.left, component.softKeyText.center, component.softKeyText.right);
-        component.mount('__kai_router__');
+        console.log(component);
+        this.setSoftKeyText(
+          component.softKeyText.left,
+          component.softKeyText.center,
+          component.softKeyText.right
+        );
+        component.mount("__kai_router__");
         DOM.scrollTop = this.stack[this.stack.length - 1].scrollThreshold;
         r = true;
       }
@@ -177,249 +197,334 @@ const KaiRouter = (function() {
       return false;
     }
     return false;
-  }
+  };
 
-  KaiRouter.prototype.onInputFocus = function() {
-    const component = this.stack[this.stack.length -1];
-    this.setSoftKeyText(component.softKeyInputFocusText.left, component.softKeyInputFocusText.center, component.softKeyInputFocusText.right);
-    const SK = document.getElementById('__kai_soft_key__');
-    SK.classList.add('kui-software-key-dark');
-  }
+  KaiRouter.prototype.onInputFocus = function () {
+    const component = this.stack[this.stack.length - 1];
+    this.setSoftKeyText(
+      component.softKeyInputFocusText.left,
+      component.softKeyInputFocusText.center,
+      component.softKeyInputFocusText.right
+    );
+    const SK = document.getElementById("__kai_soft_key__");
+    SK.classList.add("kui-software-key-dark");
+  };
 
-  KaiRouter.prototype.onInputBlur = function() {
-    const component = this.stack[this.stack.length -1];
-    this.setSoftKeyText(component.softKeyText.left, component.softKeyText.center, component.softKeyText.right);
-    const SK = document.getElementById('__kai_soft_key__');
-    SK.classList.remove('kui-software-key-dark');
-  }
+  KaiRouter.prototype.onInputBlur = function () {
+    const component = this.stack[this.stack.length - 1];
+    this.setSoftKeyText(
+      component.softKeyText.left,
+      component.softKeyText.center,
+      component.softKeyText.right
+    );
+    const SK = document.getElementById("__kai_soft_key__");
+    SK.classList.remove("kui-software-key-dark");
+  };
 
-  KaiRouter.prototype.showBottomSheet = function(component) {
-    document.body.style.position = '';
-    component.mount('__kai_bottom_sheet__');
-    this.setSoftKeyText(component.softKeyText.left, component.softKeyText.center, component.softKeyText.right);
+  KaiRouter.prototype.showBottomSheet = function (component) {
+    document.body.style.position = "";
+    component.mount("__kai_bottom_sheet__");
+    this.setSoftKeyText(
+      component.softKeyText.left,
+      component.softKeyText.center,
+      component.softKeyText.right
+    );
     this.bottomSheet = true;
     this.stack.push(component);
-    const DOM = document.getElementById('__kai_bottom_sheet__');
-    const SK = document.getElementById('__kai_soft_key__');
-    DOM.classList.add('kui-overlay');
+    const DOM = document.getElementById("__kai_bottom_sheet__");
+    const SK = document.getElementById("__kai_soft_key__");
+    DOM.classList.add("kui-overlay");
     if (SK) {
-      DOM.classList.add('kui-overlay-visible');
-      SK.classList.add('kui-software-key-dark');
+      DOM.classList.add("kui-overlay-visible");
+      SK.classList.add("kui-software-key-dark");
     } else {
-      DOM.classList.add('kui-overlay-visible-no-sk');
+      DOM.classList.add("kui-overlay-visible-no-sk");
     }
-  }
+  };
 
-  KaiRouter.prototype.hideBottomSheet = function() {
+  KaiRouter.prototype.hideBottomSheet = function () {
     if (!this.bottomSheet) {
       return;
     }
     this.bottomSheet = false;
     this.stack.pop();
-    const component = this.stack[this.stack.length -1];
-    this.setSoftKeyText(component.softKeyText.left, component.softKeyText.center, component.softKeyText.right);
-    const DOM = document.getElementById('__kai_bottom_sheet__');
-    const SK = document.getElementById('__kai_soft_key__');
+    const component = this.stack[this.stack.length - 1];
+    this.setSoftKeyText(
+      component.softKeyText.left,
+      component.softKeyText.center,
+      component.softKeyText.right
+    );
+    const DOM = document.getElementById("__kai_bottom_sheet__");
+    const SK = document.getElementById("__kai_soft_key__");
     if (DOM) {
-      if (DOM.__kaikit__ != undefined && DOM.__kaikit__ instanceof Kai && DOM.__kaikit__.id === '__kai_bottom_sheet__') {
+      if (
+        DOM.__kaikit__ != undefined &&
+        DOM.__kaikit__ instanceof Kai &&
+        DOM.__kaikit__.id === "__kai_bottom_sheet__"
+      ) {
         DOM.__kaikit__.unmount();
-        DOM.removeEventListener('click', DOM.__kaikit__.handleClick);
+        DOM.removeEventListener("click", DOM.__kaikit__.handleClick);
       }
     }
     if (SK) {
-      DOM.classList.remove('kui-overlay-visible');
-      SK.classList.remove('kui-software-key-dark');
+      DOM.classList.remove("kui-overlay-visible");
+      SK.classList.remove("kui-software-key-dark");
     } else {
-      DOM.classList.remove('kui-overlay-visible-no-sk');
+      DOM.classList.remove("kui-overlay-visible-no-sk");
     }
-  }
+  };
 
-  KaiRouter.prototype.showDialog = function(title, body, dataCb, positiveText, positiveCb, negativeText, negativeCb, neutralText, neutralCb, closeCb) {
-    if (document.activeElement.tagName === 'INPUT') {
+  KaiRouter.prototype.showDialog = function (
+    title,
+    body,
+    dataCb,
+    positiveText,
+    positiveCb,
+    negativeText,
+    negativeCb,
+    neutralText,
+    neutralCb,
+    closeCb
+  ) {
+    if (document.activeElement.tagName === "INPUT") {
       document.activeElement.blur();
     }
-    const dialog = Kai.createDialog(title, body, dataCb, positiveText, positiveCb, negativeText, negativeCb, neutralText, neutralCb, closeCb, this);
+    const dialog = Kai.createDialog(
+      title,
+      body,
+      dataCb,
+      positiveText,
+      positiveCb,
+      negativeText,
+      negativeCb,
+      neutralText,
+      neutralCb,
+      closeCb,
+      this
+    );
     this.showBottomSheet(dialog);
-  }
+  };
 
-  KaiRouter.prototype.hideDialog = function() {
+  KaiRouter.prototype.hideDialog = function () {
     this.hideBottomSheet();
-  }
+  };
 
-  KaiRouter.prototype.showOptionMenu = function(title, options, selectText, selectCb, closeCb, verticalNavIndex = -1) {
-    if (document.activeElement.tagName === 'INPUT') {
+  KaiRouter.prototype.showOptionMenu = function (
+    title,
+    options,
+    selectText,
+    selectCb,
+    closeCb,
+    verticalNavIndex = -1
+  ) {
+    if (document.activeElement.tagName === "INPUT") {
       document.activeElement.blur();
     }
-    const option_menu = Kai.createOptionMenu(title, options, selectText, selectCb, closeCb, verticalNavIndex, this);
+    const option_menu = Kai.createOptionMenu(
+      title,
+      options,
+      selectText,
+      selectCb,
+      closeCb,
+      verticalNavIndex,
+      this
+    );
     this.showBottomSheet(option_menu);
-  }
+  };
 
-  KaiRouter.prototype.hideOptionMenu = function() {
+  KaiRouter.prototype.hideOptionMenu = function () {
     this.hideBottomSheet();
-  }
+  };
 
-  KaiRouter.prototype.calcRouterHeight = function() {
+  KaiRouter.prototype.calcRouterHeight = function () {
     var padding = 0;
-    const body = document.getElementById('__kai_router__');
-    const header = document.getElementById('__kai_header__');
+    const body = document.getElementById("__kai_router__");
+    const header = document.getElementById("__kai_header__");
     if (header) {
       padding += 28;
-      body.classList.add('kui-router-m-top');
+      body.classList.add("kui-router-m-top");
     }
-    const sk = document.getElementById('__kai_soft_key__');
+    const sk = document.getElementById("__kai_soft_key__");
     if (sk) {
       padding += 30;
-      body.classList.add('kui-router-m-bottom');
-      
+      body.classList.add("kui-router-m-bottom");
     }
     if (padding === 28) {
-      body.classList.add('kui-router-h-hdr');
+      body.classList.add("kui-router-h-hdr");
     } else if (padding === 30) {
-      body.classList.add('kui-router-h-sk');
+      body.classList.add("kui-router-h-sk");
     } else if (padding === 58) {
-      body.classList.add('kui-router-h-hdr-sk');
+      body.classList.add("kui-router-h-hdr-sk");
     }
-  }
+  };
 
-  
-
-  KaiRouter.prototype.mountHeader = function() {
-    const EL = document.getElementById('__kai_header__');
+  KaiRouter.prototype.mountHeader = function () {
+    const EL = document.getElementById("__kai_header__");
     if (EL) {
       this.header = Kai.createHeader(EL, this);
-      this.header.mount('__kai_header__');
+      this.header.mount("__kai_header__");
       this.header.methods.setHeaderTitle(this.title);
     }
-  }
+  };
 
-  KaiRouter.prototype.setHeaderTitle = function(txt) {
+  KaiRouter.prototype.setHeaderTitle = function (txt) {
     this.header.methods.setHeaderTitle(txt);
-  }
+  };
 
-  KaiRouter.prototype.mountSoftKey = function() {
-    const EL = document.getElementById('__kai_soft_key__');
+  KaiRouter.prototype.mountSoftKey = function () {
+    const EL = document.getElementById("__kai_soft_key__");
     if (EL) {
       this.softwareKey = Kai.createSoftKey(EL, this);
-      this.softwareKey.mount('__kai_soft_key__');
-      this.softwareKey.methods.setLeftText('');
-      this.softwareKey.methods.setCenterText('');
-      this.softwareKey.methods.setRightText('');
+      this.softwareKey.mount("__kai_soft_key__");
+      this.softwareKey.methods.setLeftText("");
+      this.softwareKey.methods.setCenterText("");
+      this.softwareKey.methods.setRightText("");
     }
-  }
+  };
 
-  KaiRouter.prototype.mountToast = function() {
-    const EL = document.getElementById('__kai_toast__');
+  KaiRouter.prototype.mountToast = function () {
+    const EL = document.getElementById("__kai_toast__");
     if (EL) {
       this.toast = Kai.createToast(EL);
-      this.toast.mount('__kai_toast__');
+      this.toast.mount("__kai_toast__");
     }
-  }
+  };
 
-  KaiRouter.prototype.showToast = function(text) {
+  KaiRouter.prototype.showToast = function (text) {
     this.toast.methods.showToast(text);
-  }
+  };
 
-  
-
-  KaiRouter.prototype.setSoftKeyText = function(l, c, r) {
+  KaiRouter.prototype.setSoftKeyText = function (l, c, r) {
     this.softwareKey.methods.setText(l, c, r);
-  }
+  };
 
-  KaiRouter.prototype.setSoftKeyLeftText = function(txt) {
+  KaiRouter.prototype.setSoftKeyLeftText = function (txt) {
     this.softwareKey.methods.setLeftText(txt);
-  }
+  };
 
-  KaiRouter.prototype.setSoftKeyCenterText = function(txt) {
+  KaiRouter.prototype.setSoftKeyCenterText = function (txt) {
     this.softwareKey.methods.setCenterText(txt);
-  }
+  };
 
-  KaiRouter.prototype.setSoftKeyRightText = function(txt) {
+  KaiRouter.prototype.setSoftKeyRightText = function (txt) {
     this.softwareKey.methods.setRightText(txt);
-  }
+  };
 
-  KaiRouter.prototype.clickLeft = function() {
+  KaiRouter.prototype.clickLeft = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (document.activeElement.tagName === 'INPUT') {
-        if (typeof this.stack[this.stack.length - 1].softKeyInputFocusListener.left === 'function') {
+      if (document.activeElement.tagName === "INPUT") {
+        if (
+          typeof this.stack[this.stack.length - 1].softKeyInputFocusListener
+            .left === "function"
+        ) {
           this.stack[this.stack.length - 1].softKeyInputFocusListener.left();
         }
         return;
       }
-      if (typeof this.stack[this.stack.length - 1].softKeyListener.left === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].softKeyListener.left ===
+        "function"
+      ) {
         this.stack[this.stack.length - 1].softKeyListener.left();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.clickCenter = function() {
+  KaiRouter.prototype.clickCenter = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (document.activeElement.tagName === 'INPUT') {
-        if (typeof this.stack[this.stack.length - 1].softKeyInputFocusListener.center === 'function') {
+      if (document.activeElement.tagName === "INPUT") {
+        if (
+          typeof this.stack[this.stack.length - 1].softKeyInputFocusListener
+            .center === "function"
+        ) {
           this.stack[this.stack.length - 1].softKeyInputFocusListener.center();
         }
         return;
       }
-      if (typeof this.stack[this.stack.length - 1].softKeyListener.center === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].softKeyListener.center ===
+        "function"
+      ) {
         this.stack[this.stack.length - 1].softKeyListener.center();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.clickRight = function() {
+  KaiRouter.prototype.clickRight = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (document.activeElement.tagName === 'INPUT') {
-        if (typeof this.stack[this.stack.length - 1].softKeyInputFocusListener.right === 'function') {
+      if (document.activeElement.tagName === "INPUT") {
+        if (
+          typeof this.stack[this.stack.length - 1].softKeyInputFocusListener
+            .right === "function"
+        ) {
           this.stack[this.stack.length - 1].softKeyInputFocusListener.right();
         }
         return;
       }
-      if (typeof this.stack[this.stack.length - 1].softKeyListener.right === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].softKeyListener.right ===
+        "function"
+      ) {
         this.stack[this.stack.length - 1].softKeyListener.right();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.arrowUp = function() {
+  KaiRouter.prototype.arrowUp = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (typeof this.stack[this.stack.length - 1].dPadNavListener.arrowUp === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].dPadNavListener.arrowUp ===
+        "function"
+      ) {
         this.stack[this.stack.length - 1].dPadNavListener.arrowUp();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.arrowRight = function() {
+  KaiRouter.prototype.arrowRight = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (typeof this.stack[this.stack.length - 1].dPadNavListener.arrowRight === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].dPadNavListener.arrowRight ===
+        "function"
+      ) {
         this.stack[this.stack.length - 1].dPadNavListener.arrowRight();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.arrowDown = function() {
+  KaiRouter.prototype.arrowDown = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (typeof this.stack[this.stack.length - 1].dPadNavListener.arrowDown === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].dPadNavListener.arrowDown ===
+        "function"
+      ) {
         this.stack[this.stack.length - 1].dPadNavListener.arrowDown();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.arrowLeft = function() {
+  KaiRouter.prototype.arrowLeft = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (typeof this.stack[this.stack.length - 1].dPadNavListener.arrowLeft === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].dPadNavListener.arrowLeft ===
+        "function"
+      ) {
         this.stack[this.stack.length - 1].dPadNavListener.arrowLeft();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.backKey = function() {
+  KaiRouter.prototype.backKey = function () {
     if (this.stack[this.stack.length - 1]) {
-      if (typeof this.stack[this.stack.length - 1].backKeyListener === 'function') {
+      if (
+        typeof this.stack[this.stack.length - 1].backKeyListener === "function"
+      ) {
         return this.stack[this.stack.length - 1].backKeyListener();
       }
     }
-  }
+  };
 
-  KaiRouter.prototype.handleKeydown = function(e, _router) {
+  KaiRouter.prototype.handleKeydown = function (e, _router) {
     if (this.loading != null) {
       if (this.loading.data.status === true) {
         e.preventDefault();
@@ -427,10 +532,10 @@ const KaiRouter = (function() {
         return;
       }
     }
-    switch(e.key) {
-      case 'Backspace':
-      case 'EndCall':
-        if (document.activeElement.tagName === 'INPUT') {
+    switch (e.key) {
+      case "Backspace":
+      case "EndCall":
+        if (document.activeElement.tagName === "INPUT") {
           if (document.activeElement.value.length === 0) {
             document.activeElement.blur();
           }
@@ -456,57 +561,56 @@ const KaiRouter = (function() {
             }
           }
         }
-        break
-      case 'SoftLeft':
+        break;
+      case "SoftLeft":
         if (_router) {
           _router.clickLeft();
         }
-        break
-      case 'SoftRight':
+        break;
+      case "SoftRight":
         if (_router) {
           _router.clickRight();
         }
-        break
-      case 'Enter':
+        break;
+      case "Enter":
         if (_router) {
           _router.clickCenter();
         }
-        break
-      case 'ArrowUp':
-        if (document.activeElement.tagName === 'INPUT') {
+        break;
+      case "ArrowUp":
+        if (document.activeElement.tagName === "INPUT") {
           document.activeElement.blur();
         }
         if (_router) {
           _router.arrowUp();
         }
-        break
-      case 'ArrowRight':
-        if (document.activeElement.tagName === 'INPUT') {
+        break;
+      case "ArrowRight":
+        if (document.activeElement.tagName === "INPUT") {
           return;
         }
         if (_router) {
           _router.arrowRight();
         }
-        break
-      case 'ArrowDown':
-        if (document.activeElement.tagName === 'INPUT') {
+        break;
+      case "ArrowDown":
+        if (document.activeElement.tagName === "INPUT") {
           document.activeElement.blur();
         }
         if (_router) {
           _router.arrowDown();
         }
-        break
-      case 'ArrowLeft':
-        if (document.activeElement.tagName === 'INPUT') {
+        break;
+      case "ArrowLeft":
+        if (document.activeElement.tagName === "INPUT") {
           return;
         }
         if (_router) {
           _router.arrowLeft();
         }
-        break
+        break;
     }
-  }
+  };
 
   return KaiRouter;
-
 })();
