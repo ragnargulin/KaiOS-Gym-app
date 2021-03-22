@@ -187,7 +187,6 @@ window.addEventListener("load", function () {
     components: [],
     templateUrl: document.location.origin + "/templates/child_1.html",
     mounted: function () {
-      console.log("In firstChild");
       let workOuts = JSON.parse(localStorage.getItem("workouts"));
       for (let c = 0; workOuts != null && c < workOuts.length; c++) {
         let htmlTemplate =
@@ -335,7 +334,7 @@ window.addEventListener("load", function () {
         }
         try {
           let workouts = localStorage.getItem("workouts");
-          if (workouts == null) workouts = [];
+          if (workouts == "" || workouts == null) workouts = [];
           else workouts = JSON.parse(workouts);
           workouts.push(obj);
           localStorage.setItem("workouts", JSON.stringify(workouts));
@@ -368,14 +367,147 @@ window.addEventListener("load", function () {
       title: "_EDIT_",
       counter: -1,
     },
-    verticalNavClass: ".child2Nav",
+    verticalNavClass: ".child1Nav",
     templateUrl: document.location.origin + "/templates/editWorkout.html",
-    mounted: function () {},
+    mounted: function () {
+      let workOuts = localStorage.getItem("workouts");
+      if (workOuts == "" || workOuts == null) workOuts = [];
+      else workOuts = JSON.parse(workOuts);
+      for (let c = 0; workOuts != null && c < workOuts.length; c++) {
+        let htmlTemplate =
+          "<div class='kui-frontpage-separator'></div>" +
+          "<li class='child1Nav' @click='edit(\"" +
+          workOuts[c].title +
+          "\")'>" +
+          workOuts[c].title +
+          "<svg class='svg' width='40' height='60'><polyline points='10 10 30 30 10 50' stroke='#9d46ff' stroke-width='5' stroke-linecap='butt' fill='none' stroke-linejoin='round'>&lt;</polyline></svg></li>";
+        document.getElementById("workOutList").innerHTML += htmlTemplate;
+      }
+    },
     unmounted: function () {},
-    methods: {},
-    softKeyText: {},
-    softKeyListener: {},
-    dPadNavListener: {},
+    methods: {
+      edit: function (val) {
+        this.$router.push(
+          new Kai({
+            name: "_EDITCHILD_",
+            data: {
+              title: val,
+              counter: -1,
+            },
+            verticalNavClass: ".child2Nav",
+            templateUrl: document.location.origin + "/templates/editForm.html",
+            mounted: function () {
+              let workOuts = JSON.parse(localStorage.getItem("workouts"));
+              let workOut =
+                workOuts[workOuts.findIndex((elem) => elem.title == val)];
+              try {
+                let exTemplate = document.createElement("div");
+                exTemplate.setAttribute("class", "exerInp");
+                exTemplate.setAttribute("id", "Ex");
+                console.log(workOut);
+                exTemplate.innerHTML +=
+                  "<input id='inp1' value='" +
+                  workOut.title +
+                  "' class='child2Nav kui-input' placeholder='Workout Name' ></input></br>";
+                console.log(exTemplate.innerHTML);
+                for (let c = 0; c < workOut.exercises.length; c++) {
+                  exTemplate.innerHTML +=
+                    String(c + 1) +
+                    ")." +
+                    "<input name='ex" +
+                    String(c + 1) +
+                    "'class='child2Nav kui-input' placeholder='Exercise Name' value='" +
+                    workOut.exercises[c].title +
+                    "'>" +
+                    "</input>" +
+                    "<input name='set" +
+                    String(c + 1) +
+                    "'class='child2Nav kui-input' placeholder='Sets' value='" +
+                    workOut.exercises[c].sets +
+                    "'></input><input name='rep" +
+                    String(c + 1) +
+                    "'class='child2Nav kui-input' placeholder='Reps' value='" +
+                    workOut.exercises[c].reps +
+                    "'></input>";
+                }
+                console.log(exTemplate);
+                document.getElementById("exers").appendChild(exTemplate);
+              } catch (e) {
+                console.log(e);
+              }
+            },
+            methods: {},
+            softKeyText: { right: "Save" },
+            softKeyListener: {
+              right: function () {
+                let exTitle = document.getElementById("inp1").value;
+                let arr = $("#exers").serializeArray();
+                console.log(exTitle);
+                console.log(arr);
+                let obj = {};
+                obj.title = exTitle;
+                obj.exercises = [];
+                for (let c = 0; c < arr.length; c += 3) {
+                  obj.exercises.push({
+                    title: arr[c].value,
+                    sets: arr[c + 1].value,
+                    reps: arr[c + 2].value,
+                  });
+                }
+                try {
+                  let workouts = localStorage.getItem("workouts");
+                  if (workouts == "" || workouts == null) workouts = [];
+                  else workouts = JSON.parse(workouts);
+                  console.log(obj.title);
+                  console.log(this.data.title);
+                  if (obj.title == this.data.title) {
+                    for (let c = 0; c < workouts.length; c++)
+                      if (workouts[c].title == this.data.title)
+                        workouts[c] = obj;
+                  } else {
+                    workouts = workouts.filter(
+                      (elem) => elem.title != this.data.title
+                    );
+                    workouts.push(obj);
+                    console.log(workouts);
+                  }
+                  localStorage.setItem("workouts", JSON.stringify(workouts));
+                  this.$router.showToast("Saved !");
+                } catch (e) {
+                  this.$router.showToast("Failure !");
+                  console.log(e);
+                }
+              },
+            },
+            dPadNavListener: {},
+            backKeyListener: function () {},
+          })
+        );
+      },
+    },
+    softKeyText: { center: "Edit" },
+    softKeyListener: {
+      center: function () {
+        const listNav = document.querySelectorAll(this.verticalNavClass);
+        if (this.verticalNavIndex > -1) {
+          listNav[this.verticalNavIndex].click();
+        }
+      },
+    },
+    dPadNavListener: {
+      arrowUp: function () {
+        this.navigateListNav(-1);
+      },
+      arrowRight: function () {
+        // this.navigateTabNav(-1);
+      },
+      arrowDown: function () {
+        this.navigateListNav(1);
+      },
+      arrowLeft: function () {
+        // this.navigateTabNav(1);
+      },
+    },
     backKeyListener: function () {},
   });
 
@@ -386,14 +518,68 @@ window.addEventListener("load", function () {
       title: "_DEL_",
       counter: -1,
     },
-    verticalNavClass: ".child2Nav",
+    verticalNavClass: ".child1Nav",
     templateUrl: document.location.origin + "/templates/delWorkout.html",
-    mounted: function () {},
+    mounted: function () {
+      let workOuts = JSON.parse(localStorage.getItem("workouts"));
+      for (let c = 0; workOuts != null && c < workOuts.length; c++) {
+        let htmlTemplate =
+          "<div class='kui-frontpage-separator'></div>" +
+          "<li class='child1Nav' @click='delete(\"" +
+          workOuts[c].title +
+          "\")'>" +
+          workOuts[c].title +
+          "<svg class='svg' width='40' height='60'><polyline points='10 10 30 30 10 50' stroke='#9d46ff' stroke-width='5' stroke-linecap='butt' fill='none' stroke-linejoin='round'>&lt;</polyline></svg></li>";
+        document.getElementById("workOutList").innerHTML += htmlTemplate;
+      }
+    },
     unmounted: function () {},
-    methods: {},
-    softKeyText: {},
-    softKeyListener: {},
-    dPadNavListener: {},
+    methods: {
+      delete: function (val) {
+        try {
+          let workout = JSON.parse(localStorage.getItem("workouts"));
+          if (workout != null) console.log(workout);
+          console.log(val);
+          console.log(workout.findIndex((elem) => elem.title == val));
+          workout.splice(
+            workout.findIndex((elem) => elem.title == val),
+            1
+          );
+          console.log(workout);
+          if (workout.length != 0)
+            localStorage.setItem("workouts", JSON.stringify(workout));
+          else localStorage.removeItem("workouts");
+          this.$router.showToast("Success !");
+        } catch (e) {
+          console.log(e);
+          this.$router.showToast("Failed !");
+        }
+        return;
+      },
+    },
+    softKeyText: { center: "Delete" },
+    softKeyListener: {
+      center: function () {
+        const listNav = document.querySelectorAll(this.verticalNavClass);
+        if (this.verticalNavIndex > -1) {
+          listNav[this.verticalNavIndex].click();
+        }
+      },
+    },
+    dPadNavListener: {
+      arrowUp: function () {
+        this.navigateListNav(-1);
+      },
+      arrowRight: function () {
+        // this.navigateTabNav(-1);
+      },
+      arrowDown: function () {
+        this.navigateListNav(1);
+      },
+      arrowLeft: function () {
+        // this.navigateTabNav(1);
+      },
+    },
     backKeyListener: function () {},
   });
   //#endregion
@@ -421,7 +607,9 @@ window.addEventListener("load", function () {
     },
   };
   try {
-    let workOutList = JSON.parse(localStorage.getItem("workouts"));
+    let workOutList = localStorage.getItem("workouts");
+    if (workOutList == "") workOutList = [];
+    else workOutList = JSON.parse(workOutList);
     for (let c = 0; workOutList != null && c < workOutList.length; c++) {
       routes[workOutList[c].title] = {
         name: workOutList[c].title,
