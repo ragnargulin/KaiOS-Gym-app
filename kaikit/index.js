@@ -541,6 +541,7 @@ const Kai = (function () {
   };
 
   Kai.prototype.nav = function (next, navIndex, navClass) {
+    console.log(next, navIndex, navClass);
     const currentIndex = this[navIndex];
     const nav = document.querySelectorAll(this[navClass]);
     if (nav.length === 0) {

@@ -368,6 +368,9 @@ p {
   border-top-right-radius: 7px;
 }
 
+div[class="kui-software-key child2Nav focus"] {
+  border: 1px solid black;
+}
 /*#endregion*/
 
 /*#region ============== Toast ============== */
@@ -418,8 +421,6 @@ body {
   background-color: transparent;
 }
 
-
-
 .row {
   display: flex;
   flex-direction: row;
@@ -432,19 +433,16 @@ body {
   flex-direction: column;
   flex-basis: 100%;
   flex: 1;
-  
 }
 
 .sets {
   background-color: transparent;
   margin-right: -10px;
-
 }
 
 .reps {
   background-color: transparent;
   margin-left: -10px;
-  
 }
 
 .reps li {
@@ -484,7 +482,6 @@ body {
 .sets li::before {
   counter-increment: section;
   content: "Set " counter(section) ":   ";
-
 }
 
 .reps li.focus {

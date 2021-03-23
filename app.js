@@ -404,6 +404,9 @@ window.addEventListener("load", function () {
             verticalNavClass: ".child2Nav",
             templateUrl: document.location.origin + "/templates/editForm.html",
             mounted: function () {
+              document
+                .getElementById("__kai_soft_key__")
+                .setAttribute("class", "kui-software-key child2Nav");
               let workOuts = JSON.parse(localStorage.getItem("workouts"));
               let workOut =
                 workOuts[workOuts.findIndex((elem) => elem.title == val)];
@@ -411,12 +414,10 @@ window.addEventListener("load", function () {
                 let exTemplate = document.createElement("div");
                 exTemplate.setAttribute("class", "exerInp");
                 exTemplate.setAttribute("id", "Ex");
-                console.log(workOut);
                 exTemplate.innerHTML +=
                   "<input id='inp1' value='" +
                   workOut.title +
                   "' class='child2Nav kui-input' placeholder='Workout Name' ></input></br>";
-                console.log(exTemplate.innerHTML);
                 for (let c = 0; c < workOut.exercises.length; c++) {
                   exTemplate.innerHTML +=
                     String(c + 1) +
@@ -437,7 +438,6 @@ window.addEventListener("load", function () {
                     workOut.exercises[c].reps +
                     "'></input>";
                 }
-                console.log(exTemplate);
                 document.getElementById("exers").appendChild(exTemplate);
               } catch (e) {
                 console.log(e);
@@ -447,10 +447,9 @@ window.addEventListener("load", function () {
             softKeyText: { right: "Save" },
             softKeyListener: {
               right: function () {
+                console.log("hi");
                 let exTitle = document.getElementById("inp1").value;
                 let arr = $("#exers").serializeArray();
-                console.log(exTitle);
-                console.log(arr);
                 let obj = {};
                 obj.title = exTitle;
                 obj.exercises = [];
@@ -465,8 +464,6 @@ window.addEventListener("load", function () {
                   let workouts = localStorage.getItem("workouts");
                   if (workouts == "" || workouts == null) workouts = [];
                   else workouts = JSON.parse(workouts);
-                  console.log(obj.title);
-                  console.log(this.data.title);
                   if (obj.title == this.data.title) {
                     for (let c = 0; c < workouts.length; c++)
                       if (workouts[c].title == this.data.title)
@@ -486,7 +483,20 @@ window.addEventListener("load", function () {
                 }
               },
             },
-            dPadNavListener: {},
+            dPadNavListener: {
+              arrowUp: function () {
+                this.navigateListNav(-1);
+              },
+              arrowRight: function () {
+                // this.navigateTabNav(-1);
+              },
+              arrowDown: function () {
+                this.navigateListNav(1);
+              },
+              arrowLeft: function () {
+                // this.navigateTabNav(1);
+              },
+            },
             backKeyListener: function () {},
           })
         );
@@ -646,7 +656,7 @@ window.addEventListener("load", function () {
             title: exs[i].title,
           },
           components: [],
-          verticalNavClass: ".firstTabNav" + i,
+          verticalNavClass: ".firstTabNav",
           templateUrl:
             document.location.origin + "/templates/workout/tabTemplate.html",
           mounted: function () {
