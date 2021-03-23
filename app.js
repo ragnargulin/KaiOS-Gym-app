@@ -637,7 +637,7 @@ window.addEventListener("load", function () {
 
   //#endregion
   function constructExerciseComponent(obj) {
-    function constructTabs(exs) {
+    function constructTabs(workoutName, exs) {
       let arr = [];
       for (let i = 0; i < exs.length; i++) {
         let Tab = new Kai({
@@ -650,13 +650,29 @@ window.addEventListener("load", function () {
           templateUrl:
             document.location.origin + "/templates/workout/tabTemplate.html",
           mounted: function () {
+            let weights = localStorage.getItem(workoutName + exs[i].title);
+            if (weights == "" || weights == null || weights == "null")
+              weights = [];
+            else weights = JSON.parse(weights);
+            console.log(weights);
+            if (weights.length == 0)
+              weights = (function () {
+                let arr = [];
+                for (let c = 0; c < Number(exs[i].sets); c++) arr.push(0);
+                return arr;
+              })();
             for (let c = 0; c < Number(exs[i].sets); c++)
               document.getElementById("sets").innerHTML +=
                 "<div class='kui-sets-separator'></div><li></li>";
             for (let c = 0; c < Number(exs[i].sets); c++)
               document.getElementById("reps").innerHTML +=
-                "<div class='kui-sets-separator'></div><li class='child2Nav firstTabNav'>" +
-                0 +
+                "<div class='kui-sets-separator'></div><li class='firstTabNav'>" +
+                exs[i].reps +
+                "</li>";
+            for (let c = 0; c < Number(exs[i].sets); c++)
+              document.getElementById("weights").innerHTML +=
+                "<div class='kui-sets-separator'></div><li class='firstTabNav'>" +
+                weights[c] +
                 "</li>";
           },
           unmounted: function () {},
@@ -672,17 +688,19 @@ window.addEventListener("load", function () {
               }
             },
             center: function () {
-              this.$router.showToast("Saved!");
-
-              const exers = document.querySelector(exs[i].title);
-              localStorage.setItem(exs[i].title, exers.innerHTML);
-
-              const listNav = document.querySelectorAll(this.verticalNavClass);
-              if (this.verticalNavIndex > -1) {
-                listNav[this.verticalNavIndex].style.backgroundColor =
-                  "#EBEBE4";
-                listNav[this.verticalNavIndex].style.color = "#808e95";
-                this.navigateListNav(1);
+              try {
+                let weights = document
+                  .querySelectorAll("#weights")[0]
+                  .innerText.split("\n");
+                console.log(weights);
+                localStorage.setItem(
+                  workoutName + exs[i].title,
+                  JSON.stringify(weights)
+                );
+                this.$router.showToast("Saved!");
+              } catch (e) {
+                this.$router.showToast("Failure !");
+                console.log(e);
               }
             },
             right: function () {
@@ -710,7 +728,7 @@ window.addEventListener("load", function () {
     let newChild = Kai.createTabNav(
       "_CHILD_ 4",
       ".child4DemoNav",
-      constructTabs(obj.exercises)
+      constructTabs(obj.title, obj.exercises)
     );
     return newChild;
   }
