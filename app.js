@@ -209,7 +209,14 @@ window.addEventListener("load", function () {
       },
       push: function (elem = null) {
         if (elem == null || elem == "") this.$router.push("second");
-        else this.$router.push(elem);
+        else {
+          let workOuts = JSON.parse(localStorage.getItem("workouts"));
+          this.$router.push(
+            constructExerciseComponent(
+              workOuts[workOuts.findIndex((temp) => temp.title == elem)]
+            )
+          );
+        }
       },
       testOptMenu: function () {
         const idx = this.data.opts.findIndex((opt) => {
@@ -606,42 +613,28 @@ window.addEventListener("load", function () {
       component: delChild,
     },
   };
-  try {
-    let workOutList = localStorage.getItem("workouts");
-    if (workOutList == "") workOutList = [];
-    else workOutList = JSON.parse(workOutList);
-    for (let c = 0; workOutList != null && c < workOutList.length; c++) {
-      routes[workOutList[c].title] = {
-        name: workOutList[c].title,
-        component: (function () {
-          let temp = constructExerciseComponent(workOutList[c]);
-          //temp.$router = this.$router;
-          return temp;
-        })(),
-      };
-    }
-  } catch (e) {
-    console.log(e);
-  }
+  // try {
+  //   let workOutList = localStorage.getItem("workouts");
+  //   if (workOutList == "") workOutList = [];
+  //   else workOutList = JSON.parse(workOutList);
+  //   for (let c = 0; workOutList != null && c < workOutList.length; c++) {
+  //     routes[workOutList[c].title] = {
+  //       name: workOutList[c].title,
+  //       component: (function () {
+  //         let temp = constructExerciseComponent(workOutList[c]);
+  //         //temp.$router = this.$router;
+  //         return temp;
+  //       })(),
+  //     };
+  //   }
+  // } catch (e) {
+  //   console.log(e);
+  // }
   let router = new KaiRouter({
     title: "GymApp",
     routes: routes,
   });
 
-  function updateRouter(options = { title: "GymApp", routes: routes }) {
-    let workOutList = JSON.parse(localStorage.getItem("workouts"));
-    for (let c = 0; workOutList != null && c < workOutList.length; c++) {
-      options.routes[workOutList[c].title] = {
-        name: workOutList[c].title,
-        component: (function () {
-          let temp = constructExerciseComponent(workOutList[c]);
-          //temp.$router = this.$router;
-          return temp;
-        })(),
-      };
-    }
-    if (workOutList != null) router = new KaiRouter(options);
-  }
   //#endregion
   function constructExerciseComponent(obj) {
     function constructTabs(exs) {
