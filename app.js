@@ -656,7 +656,7 @@ window.addEventListener("load", function () {
             for (let c = 0; c < Number(exs[i].sets); c++)
               document.getElementById("reps").innerHTML +=
                 "<div class='kui-sets-separator'></div><li class='child2Nav firstTabNav'>" +
-                exs[i].reps +
+                0 +
                 "</li>";
           },
           unmounted: function () {},
