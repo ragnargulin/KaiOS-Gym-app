@@ -328,15 +328,15 @@ window.addEventListener("load", function () {
       },
       center: function () {
         let exTitle = document.getElementById("inp1").value;
-        let arr = $("#exers").serializeArray();
+        let arr = Array.from(new FormData($("#exers")[0]).values());
         let obj = {};
         obj.title = exTitle;
         obj.exercises = [];
         for (let c = 0; c < arr.length; c += 3) {
           obj.exercises.push({
-            title: arr[c].value,
-            sets: arr[c + 1].value,
-            reps: arr[c + 2].value,
+            title: arr[c],
+            sets: arr[c + 1],
+            reps: arr[c + 2],
           });
         }
         try {
@@ -449,15 +449,15 @@ window.addEventListener("load", function () {
               right: function () {
                 console.log("hi");
                 let exTitle = document.getElementById("inp1").value;
-                let arr = $("#exers").serializeArray();
+                let arr = Array.from(new FormData($("#exers")[0]).values());
                 let obj = {};
                 obj.title = exTitle;
                 obj.exercises = [];
                 for (let c = 0; c < arr.length; c += 3) {
                   obj.exercises.push({
-                    title: arr[c].value,
-                    sets: arr[c + 1].value,
-                    reps: arr[c + 2].value,
+                    title: arr[c],
+                    sets: arr[c + 1],
+                    reps: arr[c + 2],
                   });
                 }
                 try {
