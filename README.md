@@ -1,8 +1,7 @@
-# gym app
+# KaiOS gym app
+
  
- This is all the code I'm using. The main app can be found in app.js 
- 
- Child_1 in app.js contains the options menu. From there, users should be able to add, edit and delete workouts. Once a workout gets added, it should look like the workouts stored in templates and also get added to the html-file child_1
+Old project for KaiOS, the worlds 3rd largest mobile OS. Abandoned by me but feel free to pick up where I left off. The app is pretty much complete and ready for use
  
  
  
